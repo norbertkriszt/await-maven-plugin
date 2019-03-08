@@ -13,7 +13,7 @@ await-maven-plugin is a plugin to pause maven build until some service is availa
             <plugin>
                 <groupId>com.github.slem1</groupId>
                 <artifactId>await-maven-plugin</artifactId>
-                <version>1.1</version>
+                <version>1.2</version>
                 <executions>
                     <execution>
                         <phase>process-test-classes</phase>
@@ -35,8 +35,9 @@ await-maven-plugin is a plugin to pause maven build until some service is availa
                     </tcpConnections>
                     <httpConnections>
                         <httpConnection>
-                            <url>http://mywebservice:9090</url>
+                            <url>https://mywebservice:9090</url>
                             <statusCode>200</statusCode>
+                            <skipSSLCertVerification>true</skipSSLCertVerification>
                         </httpConnection>
                     </httpConnections>    
                 </configuration>
@@ -122,8 +123,9 @@ A collection of http or https connections.
 The configuration of a connection to a service running on http.
 ```xml
   <httpConnection>
-    <url>http://mywebservice:9090</url>
+    <url>https://mywebservice:9090</url>
     <statusCode>200</statusCode>
+    <skipSSLCertVerification>true</skipSSLCertVerification>
   </httpConnection>
 ```
 ##### url
@@ -146,6 +148,14 @@ Defines the order in which the connection will be attempted across tcpConnection
 By default, if not defined, the priority is the lowest (Integer.MAX_VALUE). 
 ```xml
     <priority>100</priority>
+```
+
+##### skipSSLCertVerification
+
+When this parameter is true, you are able to check an URL with HTTPS protocol, which has invalid SSL certification.
+By default, if not defined, this property is false. 
+```xml
+    <skipSSLCertVerification>true</skipSSLCertVerification>
 ```
 
 ## Example use case
@@ -176,7 +186,7 @@ Wait for a docker container startup and service up with docker-compose-maven-plu
            <plugin>
                 <groupId>com.github.slem1</groupId>
                 <artifactId>await-maven-plugin</artifactId>
-                <version>1.1</version>
+                <version>1.2</version>
                 <executions>
                     <execution>
                         <phase>process-test-classes</phase>
@@ -192,8 +202,9 @@ Wait for a docker container startup and service up with docker-compose-maven-plu
                     </poll>
                     <httpConnections>
                         <httpConnection>
-                            <url>http://localhost:27080</url>
+                            <url>https://localhost:27080</url>
                             <statusCode>200</statusCode>
+                            <skipSSLCertVerification>false</skipSSLCertVerification>
                         </httpConnection>
                     </httpConnections>
                 </configuration>
